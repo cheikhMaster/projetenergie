@@ -1,0 +1,28 @@
+<div class="app-container">
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="https://core-normal.traeapi.us/api/ide/v1/text_to_image?prompt=Senelec%20logo%20energy%20smart%20red%20blue&image_size=square" alt="Senelec Logo">
+      <span>Smart Senelec</span>
+    </div>
+    <ul class="nav-links">
+      <li><a routerLink="/htb" routerLinkActive="active">Énergie HTB</a></li>
+      <li><a routerLink="/hta" routerLinkActive="active">Énergie HTA</a></li>
+      <li><a routerLink="/production" routerLinkActive="active">Production</a></li>
+      <li><a routerLink="/ventes" routerLinkActive="active">Ventes</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-bar">
+      <div class="page-title">Tableau de Bord Énergétique</div>
+      <div class="user-info" *ngIf="username">
+        <span>{{ username }}</span>
+        <button (click)="logout()" class="logout-btn">Déconnexion</button>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,32 @@
+<div class="container">
+  <h2>Tableau de Bord HTB</h2>
+  
+  <div *ngIf="loading" class="loading">
+    Chargement des données...
+  </div>
+
+  <div *ngIf="!loading && records.length === 0" class="no-data">
+    Aucune donnée trouvée pour HTB. Veuillez vérifier l'importation Excel.
+  </div>
+
+  <table *ngIf="!loading && records.length > 0" class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Libellé</th>
+        <th>Valeur (MWh)</th>
+        <th>Pertes (MWh)</th>
+        <th>Rendement (%)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let record of records">
+        <td>{{ record.timestamp | date:'short' }}</td>
+        <td>{{ record.label }}</td>
+        <td>{{ record.value_mwh }}</td>
+        <td>{{ record.losses_mwh || '-' }}</td>
+        <td>{{ record.yield_percentage ? (record.yield_percentage | number:'1.1-2') + '%' : '-' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
