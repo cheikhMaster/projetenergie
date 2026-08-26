@@ -72,7 +72,7 @@ Erreur initiale de conception : on avait supposé un enregistrement par date, ma
 | `Production_Mensuelle_*.xlsx` | `production` | ✅ Import complet (3243/3243) |
 | `Rendement_*.xlsx` | `rendement` | ✅ Import complet (123/123) |
 | `Recap_Energie.xlsx` | `recap` | ⚠️ Import complet (74/74) mais **mapping approximatif** — voir ci-dessous |
-| `Groupe.xlsx` | `groupe` | ⚠️ Import partiel (262/524) — cause exacte non investiguée |
+| `Groupe.xlsx` | `groupe` | ✅ Import correct (262/524) — voir note ci-dessous, pas un bug |
 | `Deplacement_groupe.xlsx` | `deplacement_groupe` | ✅ 752/766, cohérent (dépend de Groupe) |
 
 ### Colonnes réelles confirmées (extraites directement des fichiers, pas du PDF)
@@ -95,7 +95,7 @@ Erreur initiale de conception : on avait supposé un enregistrement par date, ma
 
 ## Points ouverts / à investiguer
 
-1. **`Groupe.xlsx` : 262/524 lignes importées.** Cause non confirmée — hypothèses : beaucoup de doublons `IDGroupe` légitimes dans le fichier (comme pour `Centrale`), ou lignes avec `IDGroupe` manquant/invalide. À creuser avec `check_columns.py` si cette table doit être fiable pour un usage métier.
+1. **`Groupe.xlsx` : 262/524 lignes importées — RÉSOLU, comportement normal.** Investigué le 2026-08-26 : chaque `IDGroupe` apparaît exactement 2 fois dans le fichier source, et les 2 lignes sont rigoureusement identiques colonne par colonne (vérifié programmatiquement). Le fichier source contient donc un doublon exact généralisé (probablement un export dupliqué en amont). Le filtrage actuel (garder la 1ère occurrence par `IDGroupe`) est le comportement correct — 262 est le nombre réel de groupes distincts.
 
 2. **`Recap_Energie` : mapping des colonnes `TRANSFO*`/`DMS`/`DESA` à confirmer** avec un expert métier — actuellement un choix arbitraire parmi plusieurs colonnes candidates.
 

@@ -1,1 +1,15 @@
-<p>layout works!</p>
+<div class="app-layout">
+  <nav class="sidebar">
+    <div class="sidebar-title">Smart Senelec</div>
+    <a routerLink="/dashboard" routerLinkActive="active">Vue d'ensemble</a>
+    <a routerLink="/htb" routerLinkActive="active">Dashboard HTB</a>
+    <a routerLink="/hta" routerLinkActive="active">Dashboard HTA</a>
+    <a routerLink="/production" routerLinkActive="active">Production</a>
+    <a routerLink="/ventes" routerLinkActive="active">Ventes</a>
+    <button class="logout-btn" (click)="logout()">Déconnexion</button>
+  </nav>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

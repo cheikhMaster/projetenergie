@@ -1,36 +1,48 @@
-import { Routes } from "@angular/router";
-import { DashboardHtbComponent } from "./pages/dashboard-htb/dashboard-htb";
-import { DashboardHtaComponent } from "./pages/dashboard-hta/dashboard-hta";
-import { ProductionComponent } from "./pages/production/production";
-import { VentesComponent } from "./pages/ventes/ventes";
-import { authGuard } from "./guards/auth.guard";
-import { LoginComponent } from "./pages/login/login";
+import { Routes } from '@angular/router';
+import { DashboardHtbComponent } from './pages/dashboard-htb/dashboard-htb';
+import { DashboardHtaComponent } from './pages/dashboard-hta/dashboard-hta';
+import { DashboardGlobalComponent } from './pages/dashboard-global/dashboard-global';
+import { ProductionComponent } from './pages/production/production';
+import { VentesComponent } from './pages/ventes/ventes';
+import { authGuard } from './guards/auth.guard';
+import { rootRedirectGuard } from './guards/root-redirect.guard';
+import { LoginComponent } from './pages/login/login';
 
 export const routes: Routes = [
   {
-    path: "login",
-    component: LoginComponent,
+    path: '',
+    pathMatch: 'full',
+    canActivate: [rootRedirectGuard],
+    children: []
   },
   {
-    path: "htb",
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardGlobalComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'htb',
     component: DashboardHtbComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard]
   },
   {
-    path: "hta",
+    path: 'hta',
     component: DashboardHtaComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard]
   },
   {
-    path: "production",
+    path: 'production',
     component: ProductionComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard]
   },
   {
-    path: "ventes",
+    path: 'ventes',
     component: VentesComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard]
   },
-  { path: "", redirectTo: "/htb", pathMatch: "full" },
-  { path: "**", redirectTo: "/login" }, // Redirect unknown paths to login
+  { path: '**', redirectTo: '/login' }
 ];

@@ -1,0 +1,24 @@
+<div class="dashboard-global">
+  <h1>Vue d'ensemble</h1>
+
+  @if (loading()) {
+    <p class="status-msg">Chargement des données...</p>
+  } @else if (error()) {
+    <p class="status-msg error">{{ error() }}</p>
+  } @else {
+    <div class="hero-card">
+      <span class="hero-label">Rendement global moyen</span>
+      <span class="hero-value">{{ rendementGlobalMoyen() }}</span>
+      <span class="hero-sub">sur {{ nombreEnregistrements() }} enregistrements</span>
+    </div>
+
+    <div class="cards-grid">
+      @for (card of cards(); track card.label) {
+        <div class="card" [class]="'card--' + card.category">
+          <span class="card-label">{{ card.label }}</span>
+          <span class="card-value">{{ card.value }} <small>{{ card.unit }}</small></span>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,58 @@
+.dashboard-global {
+  max-width: 1100px;
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #1a2332;
+  }
+}
+
+.status-msg {
+  color: #64748b;
+  &.error { color: #dc2626; }
+}
+
+.hero-card {
+  background: #1a2332;
+  color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+
+  .hero-label { font-size: 0.9rem; opacity: 0.7; }
+  .hero-value { font-size: 2.5rem; font-weight: 700; margin: 0.25rem 0; }
+  .hero-sub { font-size: 0.8rem; opacity: 0.6; }
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+  border-left: 4px solid #94a3b8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  .card-label { font-size: 0.8rem; color: #64748b; }
+  .card-value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1a2332;
+    small { font-size: 0.75rem; font-weight: 500; color: #94a3b8; }
+  }
+
+  &--hta { border-left-color: #2563eb; }
+  &--htb { border-left-color: #7c3aed; }
+  &--production { border-left-color: #059669; }
+  &--ventes { border-left-color: #d97706; }
+}
