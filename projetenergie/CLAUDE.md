@@ -27,6 +27,10 @@ Réseau Docker : `senelec-network`. Les conteneurs se résolvent par nom de serv
 
 ## Base de données — points importants
 
+### SQL Server exige `ORDER BY` avec `OFFSET`/`LIMIT`
+
+Contrairement à MySQL/PostgreSQL, SQL Server refuse de compiler une requête `.offset(skip).limit(limit)` sans `.order_by(...)` explicite — erreur `CompileError: MSSQL requires an order_by when using an OFFSET or a non-simple LIMIT clause`. **Tout nouvel endpoint de liste paginée doit inclure `.order_by(Model.id)`** avant `.offset()/.limit()`. Tous les endpoints existants (`centrales`, `rendements`, `recap-energie`, `production`, `groupes`, `deplacement-groupes`, `type-reseau-producteurs`) ont déjà ce correctif.
+
 ### `Base.metadata.create_all()` ne migre jamais un schéma existant
 Ce projet n'utilise **pas Alembic**. Chaque changement de modèle SQLAlchemy nécessite de **DROP les tables manuellement** avant de relancer le backend, sinon erreurs `Invalid column name` ou contraintes obsolètes qui persistent.
 

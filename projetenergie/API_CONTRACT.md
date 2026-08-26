@@ -49,7 +49,7 @@ Authentifie un utilisateur et retourne un JWT.
 
 ### GET /centrales
 
-Liste les centrales. 🔒 Authentifié.
+Liste les centrales. 🔒 Authentifié. **Mis en cache Redis** (clé `centrales:{skip}:{limit}`, TTL 3600s).
 
 **Query params** : `skip` (int, défaut 0), `limit` (int, défaut 100)
 
@@ -61,7 +61,7 @@ Liste les centrales. 🔒 Authentifié.
 
 ### GET /rendements
 
-Liste les enregistrements de rendement énergétique. 🔒 Authentifié.
+Liste les enregistrements de rendement énergétique. 🔒 Authentifié. **Mis en cache Redis** (clé `rendements:{skip}:{limit}`, TTL 3600s).
 
 **Query params** : `skip`, `limit`
 
@@ -78,6 +78,54 @@ Liste les récapitulatifs énergie par poste source. 🔒 Authentifié. **Mis en
 **Query params** : `skip`, `limit`
 
 **Réponse 200** — tableau de `RecapEnergie`
+
+---
+
+## Production mensuelle
+
+### GET /production
+
+Liste les enregistrements de production mensuelle par centrale. 🔒 Authentifié. **Mis en cache Redis** (clé `production:{skip}:{limit}:{centrale_id}`, TTL 3600s).
+
+**Query params** : `skip`, `limit`, `centrale_id` (optionnel — filtre sur une centrale précise)
+
+**Réponse 200** — tableau de `ProductionMensuelle`
+
+---
+
+## Groupes (équipements)
+
+### GET /groupes
+
+Liste les groupes (moteurs/alternateurs) rattachés aux centrales. 🔒 Authentifié. **Mis en cache Redis** (clé `groupes:{skip}:{limit}:{centrale_id}`, TTL 3600s).
+
+**Query params** : `skip`, `limit`, `centrale_id` (optionnel)
+
+**Réponse 200** — tableau de `Groupe`
+
+---
+
+## Déplacements de groupes
+
+### GET /deplacement-groupes
+
+Historique des déplacements de groupes entre centrales. 🔒 Authentifié. **Mis en cache Redis** (clé `deplacement_groupes:{skip}:{limit}:{groupe_id}`, TTL 3600s).
+
+**Query params** : `skip`, `limit`, `groupe_id` (optionnel)
+
+**Réponse 200** — tableau de `DeplacementGroupe`
+
+---
+
+## Type réseau producteur
+
+### GET /type-reseau-producteurs
+
+Table de correspondance type de réseau / producteur. 🔒 Authentifié. **Mis en cache Redis** (clé `type_reseau_producteurs:{skip}:{limit}`, TTL 3600s).
+
+**Query params** : `skip`, `limit`
+
+**Réponse 200** — tableau de `TypeReseauProducteur`
 
 ---
 
