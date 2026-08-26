@@ -1,36 +1,36 @@
-import { Routes } from '@angular/router';
-import { DashboardHtbComponent } from './pages/dashboard-htb/dashboard-htb';
-import { DashboardHtaComponent } from './pages/dashboard-hta/dashboard-hta';
-import { ProductionComponent } from './pages/production/production';
-import { VentesComponent } from './pages/ventes/ventes';
-import { authGuard } from './guards/auth.guard';
-import { LoginComponent } from './pages/login/login';
+import { Routes } from "@angular/router";
+import { DashboardHtbComponent } from "./pages/dashboard-htb/dashboard-htb";
+import { DashboardHtaComponent } from "./pages/dashboard-hta/dashboard-hta";
+import { ProductionComponent } from "./pages/production/production";
+import { VentesComponent } from "./pages/ventes/ventes";
+import { authGuard } from "./guards/auth.guard";
+import { LoginComponent } from "./pages/login/login";
 
 export const routes: Routes = [
   {
-    path: 'login',
-    component: LoginComponent
+    path: "login",
+    component: LoginComponent,
   },
   {
-    path: 'htb',
+    path: "htb",
     component: DashboardHtbComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
-    path: 'hta',
+    path: "hta",
     component: DashboardHtaComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
-    path: 'production',
+    path: "production",
     component: ProductionComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
-    path: 'ventes',
+    path: "ventes",
     component: VentesComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
-  { path: '', redirectTo: '/htb', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' } // Redirect unknown paths to login
+  { path: "", redirectTo: "/htb", pathMatch: "full" },
+  { path: "**", redirectTo: "/login" }, // Redirect unknown paths to login
 ];
