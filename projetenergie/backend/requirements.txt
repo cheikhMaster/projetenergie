@@ -11,3 +11,4 @@ openpyxl
 python-multipart
 alembic
 python-jose[cryptography]
+requests

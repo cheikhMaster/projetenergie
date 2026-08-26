@@ -1,0 +1,23 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <img src="assets/senelec-logo.png" alt="Senelec Logo">
+      <h1>Smart Senelec</h1>
+      <p>Connectez-vous pour accéder au tableau de bord</p>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur</label>
+        <input id="username" type="text" formControlName="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password" required>
+      </div>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <button type="submit" class="login-btn" [disabled]="loginForm.invalid">Se connecter</button>
+    </form>
+  </div>
+</div>

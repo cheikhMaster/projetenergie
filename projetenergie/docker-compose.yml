@@ -8,6 +8,13 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourStrong!Pass", "-C", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - mssql_data:/var/opt/mssql
     networks:
       - senelec-network
 
@@ -15,6 +22,11 @@ services:
     image: redis:7-alpine
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
     networks:
       - senelec-network
 
@@ -29,15 +41,14 @@ services:
       - DATABASE_URL=mssql+pyodbc://sa:YourStrong!Pass@db/SmartSenelec?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - KEYCLOAK_URL=http://keycloak:8080
-      - KEYCLOAK_REALM=senelec
-      - KEYCLOAK_CLIENT_ID=senelec-backend
+
     ports:
       - "8000:8000"
     depends_on:
-      - db
-      - redis
-      - keycloak
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - senelec-network
 
@@ -55,3 +66,6 @@ services:
 networks:
   senelec-network:
     driver: bridge
+
+volumes:
+  mssql_data:

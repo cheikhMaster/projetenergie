@@ -1,29 +1,18 @@
-import { Component, signal, OnInit } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { KeycloakService } from 'keycloak-angular';
+import { Component, computed } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from './services/auth.service';
+import { LayoutComponent } from './components/layout/layout';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterOutlet, CommonModule, LayoutComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements OnInit {
-  protected readonly title = signal('frontend');
-  username: string = '';
+export class App {
+  isAuthenticated = computed(() => this.authService.isAuthenticated());
 
-  constructor(private keycloak: KeycloakService) {}
-
-  async ngOnInit() {
-    if (await this.keycloak.isLoggedIn()) {
-      const profile = await this.keycloak.loadUserProfile();
-      this.username = profile.username || '';
-    }
-  }
-
-  logout() {
-    this.keycloak.logout();
-  }
+  constructor(private authService: AuthService) {}
 }

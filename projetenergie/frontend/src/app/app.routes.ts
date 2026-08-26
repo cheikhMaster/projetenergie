@@ -3,32 +3,34 @@ import { DashboardHtbComponent } from './pages/dashboard-htb/dashboard-htb';
 import { DashboardHtaComponent } from './pages/dashboard-hta/dashboard-hta';
 import { ProductionComponent } from './pages/production/production';
 import { VentesComponent } from './pages/ventes/ventes';
-import { AuthGuard } from './guards/auth.guard';
+import { authGuard } from './guards/auth.guard';
+import { LoginComponent } from './pages/login/login';
 
 export const routes: Routes = [
   {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
     path: 'htb',
     component: DashboardHtbComponent,
-    canActivate: [AuthGuard],
-    data: { roles: ['admin', 'analyste', 'manager'] }
+    canActivate: [authGuard]
   },
   {
     path: 'hta',
     component: DashboardHtaComponent,
-    canActivate: [AuthGuard],
-    data: { roles: ['admin', 'analyste', 'manager'] }
+    canActivate: [authGuard]
   },
   {
     path: 'production',
     component: ProductionComponent,
-    canActivate: [AuthGuard],
-    data: { roles: ['admin', 'operateur', 'manager'] }
+    canActivate: [authGuard]
   },
   {
     path: 'ventes',
     component: VentesComponent,
-    canActivate: [AuthGuard],
-    data: { roles: ['admin', 'manager'] }
+    canActivate: [authGuard]
   },
-  { path: '', redirectTo: '/htb', pathMatch: 'full' }
+  { path: '', redirectTo: '/htb', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' } // Redirect unknown paths to login
 ];

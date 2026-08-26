@@ -6,7 +6,12 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     PROJECT_NAME: str = "Smart Senelec"
     
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
+        "http://localhost:8080",
+        "http://localhost:4200",
+        "http://localhost",
+        "https://*.senelec.com"
+    ]
 
     @validator("BACKEND_CORS_ORIGINS", pre=True)
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
@@ -17,15 +22,16 @@ class Settings(BaseSettings):
         raise ValueError(v)
 
     # SQL Server Database configuration (Driver 18)
-    DATABASE_URL: str = "mssql+pyodbc://sa:YourStrong!Pass@localhost/SmartSenelec?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    DATABASE_URL: str = "mssql+pyodbc://sa:YourStrong!Pass@db/SmartSenelec?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
     
-    # Keycloak configuration
-    KEYCLOAK_URL: str = "http://localhost:8081"
-    KEYCLOAK_REALM: str = "senelec"
-    KEYCLOAK_CLIENT_ID: str = "senelec-backend"
+    # Configuration Redis (Ajoutée pour corriger le crash)
+    REDIS_HOST: str = "redis"
+    REDIS_PORT: int = 6379
     
     class Config:
         case_sensitive = True
         env_file = ".env"
+        extra = "ignore"
+
 
 settings = Settings()

@@ -1,30 +1,26 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from app.api.api_v1.api import api_router
 from app.core.config import settings
 from app.initial_data import main as init_data
+from app.middleware import add_cors_middleware
 
-app = FastAPI(
-    title="Smart Senelec API",
-    openapi_url=f"{settings.API_V1_STR}/openapi.json"
-)
-
-@app.on_event("startup")
-async def startup_event():
-    # Run data initialization on startup
-    init_data()
-
-# Set all CORS enabled origins
-if settings.BACKEND_CORS_ORIGINS:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title="Smart Senelec API",
+        openapi_url=f"{settings.API_V1_STR}/openapi.json"
     )
 
-app.include_router(api_router, prefix=settings.API_V1_STR)
+    @app.on_event("startup")
+    def startup_event():
+        init_data()
+
+    add_cors_middleware(app)
+
+    app.include_router(api_router, prefix=settings.API_V1_STR)
+
+    return app
+
+app = create_app()
 
 @app.get("/")
 def root():

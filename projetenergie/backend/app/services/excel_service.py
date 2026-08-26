@@ -8,17 +8,21 @@ class ExcelService:
     @staticmethod
     def process_centrales(df: pd.DataFrame, db: Session):
         for _, row in df.iterrows():
-            obj = Centrale(
-                nom=row.get('Centrale'),
-                type_centrale=row.get('Type de centrale'),
-                centrale_mere=row.get('Centrale mère'),
-                reseau_producteur=row.get('Réseau producteur'),
-                lieu=row.get('Lieu'),
-                parc=row.get('Parc'),
-                type_ipp=row.get('Type de centrale IPP'),
-                service_production=row.get('Service de production')
-            )
-            db.merge(obj) # merge avoids duplicates if nom is unique
+            nom = row.get('Centrale')
+            if nom:
+                centrale = db.query(Centrale).filter(Centrale.nom == nom).first()
+                if not centrale:
+                    obj = Centrale(
+                        nom=nom,
+                        type_centrale=row.get('Type de centrale'),
+                        centrale_mere=row.get('Centrale mère'),
+                        reseau_producteur=row.get('Réseau producteur'),
+                        lieu=row.get('Lieu'),
+                        parc=row.get('Parc'),
+                        type_ipp=row.get('Type de centrale IPP'),
+                        service_production=row.get('Service de production')
+                    )
+                    db.add(obj)
         db.commit()
 
     @staticmethod
@@ -83,6 +87,7 @@ class ExcelService:
             raise FileNotFoundError(f"Fichier non trouvé: {file_path}")
         
         df = pd.read_excel(file_path)
+        df.dropna(how='all', inplace=True)
         
         if table_type == "centrale":
             cls.process_centrales(df, db)

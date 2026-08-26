@@ -1,6 +1,8 @@
 import os
 import logging
 import time
+from sqlalchemy import text
+from app.models.energy_system import Centrale
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal, engine, Base
 from app.services.excel_service import excel_service
@@ -12,6 +14,11 @@ logger = logging.getLogger(__name__)
 def init_db(db: Session) -> None:
     # Create tables
     Base.metadata.create_all(bind=engine)
+    
+    # Check if data is already imported
+    if db.query(Centrale).first():
+        logger.info("Data already imported, skipping initialization.")
+        return
     
     data_dir = "/data"
     if not os.path.exists(data_dir):
@@ -45,7 +52,7 @@ def main() -> None:
         try:
             db = SessionLocal()
             # Try a simple query to check connection
-            db.execute("SELECT 1")
+            db.execute(text("SELECT 1"))
             logger.info("Connexion à la base de données réussie.")
             init_db(db)
             db.close()
