@@ -18,11 +18,7 @@ CACHE_TTL = 3600  # secondes
 
 
 def _cached_list(cache_key: str, query_fn: Callable[[], Any], ttl: int = CACHE_TTL):
-    """
-    Sert une liste depuis Redis si présente, sinon exécute query_fn(),
-    met le résultat en cache, puis le retourne.
-    query_fn doit retourner une liste d'objets SQLAlchemy.
-    """
+   
     cached_data = get_cache(cache_key)
     if cached_data is not None:
         return cached_data

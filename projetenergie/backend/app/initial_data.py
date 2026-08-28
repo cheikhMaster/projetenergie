@@ -3,9 +3,11 @@ import logging
 import time
 from sqlalchemy import text
 from app.models.energy_system import Centrale
+from app.models.user import Role, Utilisateur  # nécessaire pour que create_all() connaisse ces tables
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal, engine, Base
 from app.services.excel_service import excel_service
+from app.services.seed_users import seed_users_and_roles
 from sqlalchemy.exc import OperationalError
 
 logging.basicConfig(level=logging.INFO)
@@ -57,6 +59,9 @@ def _find_matching_file(data_dir: str, keywords: list) -> str:
 def init_db(db: Session) -> None:
     # Create tables
     Base.metadata.create_all(bind=engine)
+
+    # Rôles et compte admin par défaut (indépendant de l'import Excel ci-dessous)
+    seed_users_and_roles(db)
 
     # Check if data is already imported
     if db.query(Centrale).first():
